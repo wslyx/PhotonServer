@@ -1,8 +1,5 @@
 ﻿using Photon.SocketServer;
 using PhotonHostRuntimeInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Common.Tools;
 using MyGameServer.Handler;
 using Common;
@@ -11,6 +8,8 @@ namespace MyGameServer
 {
     public class ClientPeer : Photon.SocketServer.ClientPeer//此类处理所有具体的请求
     {
+        public float x, y, z;
+        public string Username;
         public ClientPeer(InitRequest initRequest):base(initRequest)
         {//客户端建立连接时被调用
 
@@ -19,6 +18,7 @@ namespace MyGameServer
         protected override void OnDisconnect(DisconnectReason reasonCode, string reasonDetail)
         {//处理客户端断开链接之后的后续工作，客户端断开连接之后此函数被调用
             MyGameServer.log.Info("一个客户端断开连接");
+            MyGameServer.Instance.peerList.Remove(this);
         }
 
         protected override void OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters)

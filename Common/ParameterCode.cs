@@ -5,6 +5,7 @@
         Username,
         Password,
         Position,
-        X,Y,Z
+        X,Y,Z,
+        UsernameList
     }
 }

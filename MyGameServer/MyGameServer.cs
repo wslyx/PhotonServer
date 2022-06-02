@@ -1,14 +1,12 @@
 ﻿using ExitGames.Logging;
 using Photon.SocketServer;
 using System.IO;
-using System.Threading.Tasks;
 using ExitGames.Logging.Log4Net;
 using log4net.Config;
 using MyGameServer.Manager;
 using Common;
 using MyGameServer.Handler;
 using System.Collections.Generic;
-using Common.Tools;
 
 namespace MyGameServer
 {
@@ -21,13 +19,16 @@ namespace MyGameServer
             private set;
         }
 
+        public List<ClientPeer> peerList = new List<ClientPeer>();//通过这个列表可以访问所有客户端的peer，从而向任何一个客户端发送数据
         public Dictionary<OperationCode, BaseHandler> HandlerDict = new Dictionary<OperationCode, BaseHandler>();
 
         //当一个客户端请求链接时
         protected override PeerBase CreatePeer(InitRequest initRequest)
         {
             log.Info("一个客户端连接进来了");
-            return new ClientPeer(initRequest);//返回添加到客户端连接链表
+            ClientPeer clientPeer = new ClientPeer(initRequest);//返回添加到客户端连接链表
+            peerList.Add(clientPeer);
+            return clientPeer;
         }
 
         //初始化
@@ -59,6 +60,8 @@ namespace MyGameServer
             HandlerDict.Add(registerHandler.opCode, registerHandler);
             SyncPositionHandler syncPositionHandler = new SyncPositionHandler();
             HandlerDict.Add(syncPositionHandler.opCode, syncPositionHandler);
+            SyncPlayerHandler syncPlayerHandler = new SyncPlayerHandler();
+            HandlerDict.Add(syncPlayerHandler.opCode, syncPlayerHandler);
             DefaultHandler defaultHandler = new DefaultHandler();
             HandlerDict.Add(defaultHandler.opCode, defaultHandler);
             //log.Info("获取注册处理类:");

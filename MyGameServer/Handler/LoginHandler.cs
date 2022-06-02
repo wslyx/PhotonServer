@@ -19,15 +19,16 @@ namespace MyGameServer.Handler
         public override void OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters, ClientPeer peer)
         {//接收客户端的请求
             MyGameServer.log.Info("处理登录请求");
-            string name = DictTool.GetValue<byte, object>(operationRequest.Parameters, (byte)ParameterCode.Username) as string;//从发送请求的字典中获取用户名
-            string password = DictTool.GetValue<byte, object>(operationRequest.Parameters, (byte)ParameterCode.Password) as string;//从发送请求的字典中获取密码
+            string Username = DictTool.GetValue<byte, object>(operationRequest.Parameters, (byte)ParameterCode.Username) as string;//从发送请求的字典中获取用户名
+            string Password = DictTool.GetValue<byte, object>(operationRequest.Parameters, (byte)ParameterCode.Password) as string;//从发送请求的字典中获取密码
             UserManager userManager = new UserManager();//数据库用户管理器
-            bool isSuccess =  userManager.VerifyUser(name, password);
+            bool isSuccess =  userManager.VerifyUser(Username, Password);
 
             OperationResponse operationResponse = new OperationResponse(operationRequest.OperationCode);
             if(isSuccess)
             {
                 operationResponse.ReturnCode = (short)ReturnCode.Success;
+                peer.Username = Username;
             }
             else
             {
