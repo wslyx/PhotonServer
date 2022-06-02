@@ -11,6 +11,9 @@
   > MySql.Data Version：8.0.29
   > NHibernate Version：4.1.2.4000
 ### 文件夹说明：<br>
-  > Common文件夹 定义的客户端和服务器端共用结构体<br>
-  > MyGameServer文件夹 实际项目代码<br>
-  > NHibernateInteractive文件夹 数据库连接项目测试代码<br>
+Common文件夹<br>
+  > 定义的客户端和服务器端共用结构体<br>
+MyGameServer文件夹<br>
+  > 实际项目代码<br>
+NHibernateInteractive文件夹<br>
+  > 数据库连接项目测试代码<br>
